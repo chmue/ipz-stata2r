@@ -1,0 +1,5 @@
+# r specific
+.Rproj.user
+.Rhistory
+.RData
+.Rbuildignore
