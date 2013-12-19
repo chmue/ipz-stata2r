@@ -1,0 +1,87 @@
+# Recode: Factor → Factor
+
+```{r,echo=FALSE}
+load("erdda-cabinet.Rds")
+```
+
+A function from the `plyr` package is used here.
+
+```{r}
+library(plyr)
+```
+
+## Example 1: Change one level or character
+
+The variable that stores the country names looks like this.
+
+```{r}
+table(cabinet$cty)
+```
+
+You probably saw that the value for the Netherlands is `the Netherlands`.
+If you want to change the value to `The Netherlands`, you can use the 
+`revalue` function.
+
+`revalue` takes a named character vector, in which the new value is the 
+value of the element and the old value is the name of the element.
+
+
+```{r}
+newfact <- revalue(cabinet$cty, c("the Netherlands"="The Netherlands"))
+```
+
+The outcome looks like this.
+
+```{r}
+table(newfact)
+```
+
+
+## Example 2: Collapse several levels to one using revalue
+
+I want to generate new variable that stores the region a country is in.
+
+The first step is to copy the `country` variable in the data frame.
+
+```{r}
+cabinet$region <- cabinet$cty
+```
+
+Then I construct a vector to change the first batch of countries.
+
+```{r}
+eu.west <- c("Austria", "Belgium", "France", "Germany", 
+             "Ireland", "Italy", "Luxembourg", "the Netherlands", 
+             "Portugal", "Spain", "United Kingdom")
+changing <- rep("western europe", length(eu.west))
+names(changing) <- eu.west
+changing
+```
+
+The result 
+
+## Example 3: Collapse several levels to one using a function
+
+[Example 2](#example2) above will probably look a little complicated. An
+easier way to achieve the same functionality may be to use a function.
+
+```{r}
+regionalize <- function(cty) {
+  eur.west <- c("Austria", "Belgium", "France", "Germany", 
+               "Ireland", "Italy", "Luxembourg", "the Netherlands", 
+               "Portugal", "Spain", "United Kingdom")
+  eur.north <- c("Denmark", "Finland", "Iceland", "Norway", "Sweden",
+                "Estonia", "Latvia", "Lithuania")
+  eur.central <- c("Bulgaria", "Czech Republic", "Hungary", "Poland", 
+                   "Romania", "Slovakia", "Slovenia")
+  eur.south <- c("Greece", "Cyprus", "Malta")
+  
+  if (cty %in% eur.west) return("western europe")
+  if (cty %in% eur.north) return("northern europe")
+  if (cty %in% eur.central) return("central europe")
+  if (cty %in% eur.south) return("southern europe")
+  
+  return(NA)
+}
+```
+
