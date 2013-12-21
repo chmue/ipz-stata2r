@@ -2,6 +2,12 @@
 *.html
 *.md
 
+## datafiles ##
+erdda-cabinet.dta
+erdda-cabinet.Rds
+erdda-full.dta
+erdda-codebook.pdf
+
 # r specific
 .Rproj.user
 .Rhistory
